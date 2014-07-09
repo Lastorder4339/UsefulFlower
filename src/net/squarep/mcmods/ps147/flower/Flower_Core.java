@@ -6,7 +6,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.squarep.mcmods.ps147.flower.Block.BlockDoubleFlowerBase;
+import net.squarep.mcmods.ps147.flower.Block.BlockDoubleFlower;
 import net.squarep.mcmods.ps147.flower.Block.BlockFlower;
 import net.squarep.mcmods.ps147.flower.Event.TerrainGenEvent;
 import net.squarep.mcmods.ps147.flower.Item.ItemBlockFlower;
@@ -28,7 +28,13 @@ public class Flower_Core {
 	public static ISidedProxy proxy;
 	@Mod.Instance("ps147|flower")
 	private static Flower_Core instance;
+
+	public static Flower_Core getInstance() {
+		return instance;
+	}
+
 	public Block flower, flowerPot, flowerDouble;
+
 	public Map<String, Integer> renderIdMap = new HashMap<String, Integer>();
 
 	public Flower_Core() {
@@ -36,13 +42,12 @@ public class Flower_Core {
 	}
 
 	@Mod.Init
-	public void init(FMLInitializationEvent event) {
+	public void init(final FMLInitializationEvent event) {
 		proxy.registerTexture("/net/squarep/mcmods/ps147/assets/texture/flower_block.png");
 		Block.blocksList[37] = null;
 		Block.blocksList[38] = null;
 		// Block.blocksList[140] = null;
-		flowerDouble = new BlockDoubleFlowerBase(37)
-				.setBlockName("Flower_Double");
+		flowerDouble = new BlockDoubleFlower(37).setBlockName("Flower_Double");
 		flower = new BlockFlower(38).setBlockName("Flower_Single");
 		// flowerPot = new BlockFlowerPot(140).setBlockName("FlowerPot");
 		GameRegistry.registerBlock(flower, ItemBlockFlower.class,
@@ -130,9 +135,5 @@ public class Flower_Core {
 		// "FlowerPot");
 		// LanguageRegistry.instance().addNameForObject(flowerPot, "ja_JP",
 		// "鉢植え");
-	}
-
-	public static Flower_Core getInstance() {
-		return instance;
 	}
 }

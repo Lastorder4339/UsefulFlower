@@ -6,13 +6,13 @@ public class ServerProxy implements ISidedProxy {
 
 	@Override
 	public void registerBlockRenderer(
-			Class<? extends ISimpleBlockRenderingHandler> renderer) {
+			final Class<? extends ISimpleBlockRenderingHandler> renderer) {
 		// do nothing.
 	}
 
 	@Override
-	public void registerTexture(String path) {
-		
+	public void registerTexture(final String path) {
+
 	}
 
 }

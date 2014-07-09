@@ -19,22 +19,22 @@ import cpw.mods.fml.common.network.Player;
 public class FlowerPacketHandler implements IPacketHandler {
 
 	public static Packet getPacket(final ITileEntityPacket par1TileEntity) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream dos = new DataOutputStream(bos);
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		final DataOutputStream dos = new DataOutputStream(bos);
 
-		int x = ((TileEntity) par1TileEntity).xCoord;
-		int y = ((TileEntity) par1TileEntity).yCoord;
-		int z = ((TileEntity) par1TileEntity).zCoord;
+		final int x = ((TileEntity) par1TileEntity).xCoord;
+		final int y = ((TileEntity) par1TileEntity).yCoord;
+		final int z = ((TileEntity) par1TileEntity).zCoord;
 		try {
 			dos.writeInt(x);
 			dos.writeInt(y);
 			dos.writeInt(z);
 			par1TileEntity.sendPacketData(dos);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 
-		Packet250CustomPayload packet = new Packet250CustomPayload();
+		final Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = "TTM";
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
@@ -46,7 +46,7 @@ public class FlowerPacketHandler implements IPacketHandler {
 	@Override
 	public void onPacketData(final INetworkManager network,
 			final Packet250CustomPayload packet, final Player player) {
-		ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
+		final ByteArrayDataInput data = ByteStreams.newDataInput(packet.data);
 		if (packet.channel.equals("TTM")) {
 			int x, y, z;
 			try {
@@ -54,13 +54,13 @@ public class FlowerPacketHandler implements IPacketHandler {
 				y = data.readInt();
 				z = data.readInt();
 
-				World world = ((EntityPlayer) player).worldObj;
-				TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+				final World world = ((EntityPlayer) player).worldObj;
+				final TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
 				if (tileEntity instanceof ITileEntityPacket) {
 					((ITileEntityPacket) tileEntity).receivePacketData(data);
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}

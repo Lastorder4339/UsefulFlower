@@ -5,19 +5,14 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockFlower extends ItemBlock {
 
-	public ItemBlockFlower(int par1) {
+	public ItemBlockFlower(final int par1) {
 		super(par1);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		setMaxDamage(0);
+		setHasSubtypes(true);
 	}
 
 	@Override
-	public int getIconFromDamage(int par1) {
-		return par1;
-	}
-
-	@Override
-	public int getMetadata(int par1) {
+	public int getIconFromDamage(final int par1) {
 		return par1;
 	}
 
@@ -27,8 +22,13 @@ public class ItemBlockFlower extends ItemBlock {
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack par1ItemStack) {
+	public String getItemNameIS(final ItemStack par1ItemStack) {
 		return String.format("sq.ps147.flower.%d",
 				par1ItemStack.getItemDamage());
+	}
+
+	@Override
+	public int getMetadata(final int par1) {
+		return par1;
 	}
 }

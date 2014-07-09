@@ -8,9 +8,9 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType
 public class TerrainGenEvent {
 
 	@ForgeSubscribe
-	public void gen(Decorate event) {
-		if(event.type == EventType.FLOWERS) {
-		event.setResult(Result.DENY);
+	public void gen(final Decorate event) {
+		if (event.type == EventType.FLOWERS) {
+			event.setResult(Result.DENY);
 		}
 	}
 }

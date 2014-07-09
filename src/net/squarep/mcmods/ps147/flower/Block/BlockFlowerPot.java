@@ -17,24 +17,45 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFlowerPot extends Block {
-	public BlockFlowerPot(int par1) {
+	public BlockFlowerPot(final int par1) {
 		super(par1, Material.circuits);
-		this.blockIndexInTexture = 186;
-		this.setBlockBoundsForItemRender();
-		this.setRequiresSelfNotify();
+		blockIndexInTexture = 186;
+		setBlockBoundsForItemRender();
+		setRequiresSelfNotify();
 	}
 
 	@Override
-	public void setBlockBoundsForItemRender() {
-		float var1 = 0.375F;
-		float var2 = var1 / 2.0F;
-		this.setBlockBounds(0.5F - var2, 0.0F, 0.5F - var2, 0.5F + var2, var1,
-				0.5F + var2);
+	public boolean canPlaceBlockAt(final World par1World, final int par2,
+			final int par3, final int par4) {
+		return super.canPlaceBlockAt(par1World, par2, par3, par4)
+				&& par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
-		return false;
+	public TileEntity createTileEntity(final World world, final int metadata) {
+		return new TileEntityFlowerPot();
+	}
+
+	@Override
+	public void dropBlockAsItemWithChance(final World par1World,
+			final int par2, final int par3, final int par4, final int par5,
+			final float par6, final int par7) {
+		super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5,
+				par6, par7);
+
+		if (par5 > 0) {
+
+			/*
+			 * if (var8 != null) { this.dropBlockAsItem_do(par1World, par2,
+			 * par3, par4, var8); }
+			 */
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean func_82505_u_() {
+		return true;
 	}
 
 	@Override
@@ -44,20 +65,30 @@ public class BlockFlowerPot extends Block {
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean hasTileEntity(final int metadata) {
+		return true;
+	}
+
+	@Override
+	public int idDropped(final int par1, final Random par2Random, final int par3) {
+		return Item.flowerPot.itemID;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
 		return false;
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int x, int y, int z,
-			EntityPlayer par5EntityPlayer, int par6, float par7, float par8,
-			float par9) {
-		ItemStack var10 = par5EntityPlayer.inventory.getCurrentItem();
+	public boolean onBlockActivated(final World par1World, final int x,
+			final int y, final int z, final EntityPlayer par5EntityPlayer,
+			final int par6, final float par7, final float par8, final float par9) {
+		final ItemStack var10 = par5EntityPlayer.inventory.getCurrentItem();
 
 		if (var10 == null) {
 			return false;
 		} else if (Block.blocksList[var10.itemID] instanceof IPlantable) {
-			TileEntity te = par1World.getBlockTileEntity(x, y, z);
+			final TileEntity te = par1World.getBlockTileEntity(x, y, z);
 			if (te == null || !(te instanceof TileEntityFlowerPot)) {
 				return false;
 			} else {
@@ -81,56 +112,26 @@ public class BlockFlowerPot extends Block {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean func_82505_u_() {
-		return true;
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
-		return super.canPlaceBlockAt(par1World, par2, par3, par4)
-				&& par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
-	}
-
-	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3,
-			int par4, int par5) {
+	public void onNeighborBlockChange(final World par1World, final int par2,
+			final int par3, final int par4, final int par5) {
 		if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4)) {
-			this.dropBlockAsItem(par1World, par2, par3, par4,
+			dropBlockAsItem(par1World, par2, par3, par4,
 					par1World.getBlockMetadata(par2, par3, par4), 0);
 			par1World.setBlockWithNotify(par2, par3, par4, 0);
 		}
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, int par2, int par3,
-			int par4, int par5, float par6, int par7) {
-		super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5,
-				par6, par7);
-
-		if (par5 > 0) {
-			ItemStack var8 = null;
-
-			/*
-			 * if (var8 != null) { this.dropBlockAsItem_do(par1World, par2,
-			 * par3, par4, var8); }
-			 */
-		}
+	public boolean renderAsNormalBlock() {
+		return false;
 	}
 
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3) {
-		return Item.flowerPot.itemID;
-	}
-
-	@Override
-	public boolean hasTileEntity(int metadata) {
-		return true;
-	}
-
-	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileEntityFlowerPot();
+	public void setBlockBoundsForItemRender() {
+		final float var1 = 0.375F;
+		final float var2 = var1 / 2.0F;
+		setBlockBounds(0.5F - var2, 0.0F, 0.5F - var2, 0.5F + var2, var1,
+				0.5F + var2);
 	}
 
 }
